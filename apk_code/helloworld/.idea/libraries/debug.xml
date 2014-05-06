@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="debug">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/app/build/pre-dexed/debug/support-v4-19.0.1-4cfddba8d4f096009d33b222e342519ed07c0359.jar!/" />
+      <root url="jar://$PROJECT_DIR$/app/build/pre-dexed/debug/classes-5277a9714fd2fed7918728cdd833c7247d21b4b5.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
