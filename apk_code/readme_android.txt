@@ -103,3 +103,48 @@ EditText是TextView的子类，文本编辑框，在屏幕上显示可编辑的�
 6、 android:inputType     设置文本的类型。例如是普通文本，还是emial，passworid，数字等等。
 7、 android:singleLine     设置文本是否是单行显示。
 
+
+4. Android开发中java 命名规则包的命名
+　Java包的名字都是由小写单词组成。但是由于Java面向对象编程的特性，每一名Java程序员都可以编写属于自己的Java包，为了保障每个Java包命名的唯一性，在最新的Java编程规范中，要求程序员在自己定义的包的名称之前加上唯一的前缀。由于互联网上的域名称是不会重复的，所以程序员一般采用自己在互联网上的域名称作为自己程序包的唯一前缀。
+　　例如： net.frontfree.javagroup
+
+包划分及命名规则:
+java代码：
+com.mycompany.util
+com.mycompany.myproject
+com.mycompany.myproject.util
+com.mycompany.myproject.model
+com.mycompany.myproject.dao
+com.mycompany.myproject.dao.ejb
+com.mycompany.myproject.dao.hibernate
+com.mycompany.myproject.service
+com.mycompany.myproject.service.impl
+com.mycompany.myproject.webapp.action
+com.mycompany.myproject.webapp.filter
+com.mycompany.myproject.webapp.listener
+com.mycompany.myproject.webapp.taglib
+
+类的命名
+　　类的名字必须由大写字母开头而单词中的其他字母均为小写；如果类名称由多个单词组成，则每个单词的首字母均应为大写例如TestPage；如果类名称中包含单词缩写，则这个所写词的每个字母均应大写，如：XMLExample,还有一点命名技巧就是由于类是设计用来代表对象的，所以在命名类时应尽量选择名词。　　
+　　例如： Circle
+
+方法的命名
+　　方法的名字的第一个单词应以小写字母作为开头，后面的单词则用大写字母开头。
+　　例如： sendMessge
+
+常量的命名
+　　常量的名字应该都使用大写字母，并且指出该常量完整含义。如果一个常量名称由多个单词组成，则应该用下划线来分割这些单词。
+　　例如： MAX_VALUE
+
+参数的命名
+　　参数的命名规范和方法的命名规范相同，而且为了避免阅读程序时造成迷惑，请在尽量保证参数名称为一个单词的情况下使参数的命名尽可能明确。
+
+Javadoc注释
+　　Java除了可以采用我们常见的注释方式之外，Java语言规范还定义了一种特殊的注释，也就是我们所说的Javadoc注释，它是用来记录我们代码中的API的。Javadoc注释是一种多行注释，以结束，注释可以包含一些HTML标记符和专门的关键词。使用Javadoc注释的好处是编写的注释可以被自动转为在线文档，省去了单独编写程序文档的麻烦。
+
+   在每个程序的最开始部分，一般都用Javadoc注释对程序的总体描述以及版权信息，之后在主程序中可以为每个类、接口、方法、字段添加Javadoc注释，每个注释的开头部分先用一句话概括该类、接口、方法、字段所完成的功能，这句话应单独占据一行以突出其概括作用，在这句话后面可以跟随更加详细的描述段落。在描述性段落之后还可以跟随一些以Javadoc注释标签开头的特殊段落，例如上面例子中的@auther和@version，这些段落将在生成文档中以特定方式显示。
+
+　　虽然为一个设计低劣的程序添加注释不会使其变成好的程序，但是如果按照编程规范编写程序并且为程序添加良好的注释却可以帮助你编写出设计完美，运行效率高且易于理解的程序，尤其是在多人合作完成同一项目时编程规范就变得更加重要。俗话说“磨刀不误砍柴工”，花费一点时间去适应一下Java编程规范是有好处的。
+
+
+5.
