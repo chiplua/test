@@ -12,7 +12,7 @@
     <TextView
         android:id="@+id/textForHello"
         android:text="TimeDisplay"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:textColor="@android:color/holo_green_light"/>
 
@@ -28,9 +28,26 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/textForHello"
+        android:layout_below="@id/textForWorld"
         android:textColor="@android:color/holo_orange_light"
-        android:textSize="15sp"
+        android:textSize="20sp"
         android:id="@+id/myTime"/>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_purple"
+        android:shadowColor="@android:color/background_light"
+        android:layout_toRightOf="@id/myTime"
+        android:id="@+id/timeButton"
+        android:text="beginTest" />
+
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@android:color/holo_orange_light"
+        android:textSize="20sp"
+        android:id="@+id/secondActivityTextView"/>
 </RelativeLayout>

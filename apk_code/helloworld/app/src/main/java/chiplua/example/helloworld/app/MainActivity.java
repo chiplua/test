@@ -1,11 +1,15 @@
 package chiplua.example.helloworld.app;
 
+import android.content.Intent;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.os.Handler;
 import android.os.Message;
@@ -19,16 +23,43 @@ import java.util.Date;
 
 public class MainActivity extends ActionBarActivity {
 
+    public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static final int msgKey1 = 1;
     private TextView mTime;
+    private Button mButton;
     private int i = 2;
+    private int mButtonCount = 0;
     public CharSequence sysTimeStr;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTime = (TextView) findViewById(R.id.myTime);
+        mButton = (Button) findViewById(R.id.timeButton);
+        mButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+//            public void onClick(View view) {
+//                if (mButtonCount++%2 == 0) {
+//                    mButton.setText("IloveTheWorld");
+//                } else {
+//                    mButton.setText("HELLLLLLLLO");
+//                }
+//            }
+
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
+
+
+                TextView mSecondActivityTextView = (TextView) findViewById(R.id.secondActivityTextView);
+                String message = mSecondActivityTextView.getText().toString();
+                intent.putExtra(EXTRA_MESSAGE, message);
+
+                startActivity(intent);
+            }
+        });
+
         new TimeThread().start();
+
     }
 
     public class TimeThread extends Thread {
@@ -80,17 +111,12 @@ public class MainActivity extends ActionBarActivity {
                     //mTime.append("\n");
                     //mTime.append("time is ok");
                     mTime.setText(sysTimeStr);
-                    //mTime.append("\n");
-                    //mTime.append("TimeDisplay Over");
-
                     break;
-
                 default:
                     break;
             }
         }
     };
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

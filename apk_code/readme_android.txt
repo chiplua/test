@@ -1,4 +1,4 @@
-1.使用Bundle传递参数 源Activity中：MainActivity.java 使用Bundle传递参数到另一个Activity
+1.使用Bundle传递参数 源Activity中：MainActivity.java 使用Bundle传递参数到另一个Activity(http://wiki.eoe.cn/page/Starting_Another_Activity.html)
 
 
 2.重载与重构的区别:
