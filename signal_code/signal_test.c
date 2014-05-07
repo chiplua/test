@@ -155,16 +155,21 @@ static int  inotify_test(void)
 
 static int link_list_test(void)
 {
-	watch_descriptor_info* info;
+	printf("chiplua:%s", __FUNCTION__);     
+	Watch_descriptor_info* info;
 	info = calloc(1, sizeof(watch_descriptor_info));
-	info->wd = wd;
-	memset(info->path, 0 , sizeof(info->path));
-	strncpy(info->path, busname, strlen(busname));
+	info->wd = 200;
+	//info->path = *char("/home/chiplua");
+	strcpy(info->path, "/home/chiplua/");
+	//memset(info->path, 0 , sizeof(info->path));
+	//strncpy(info->path, busname, strlen(busname));
 	//Add to list
-	info->next = &watch_list;
-	info->prev = watch_list.prev;
-	info->prev->next = info;
-	info->next->prev = info;
+	/* info->next = &watch_list; */
+	/* info->prev = watch_list.prev; */
+	/* info->prev->next = info; */
+	/* info->next->prev = info; */
+	printf("The info->wd = %d\n", info->wd);
+	printf("The info->path = %s\n", info->path);	
 }
 
 static void chdir_and_execl_test(void)
@@ -195,7 +200,7 @@ int main(int argc, char **argv)
 	LOG("%s", "inotify_test");
 	//inotify_test();
 	LOG("%s", "link_list_test");
-	//link_list_test();
+	link_list_test();
 	LOG("%s", "chdir_and_execl_test");
 	chdir_and_execl_test();
 	//for (;;);
