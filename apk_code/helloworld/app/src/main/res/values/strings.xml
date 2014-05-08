@@ -5,5 +5,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_second">SecondActivity</string>
+    <string name="string_xml_test_value1">sdfjsadklfjklsadjfsdj</string>
+    <string name="s_tes">string_test_values</string>
+    <string name="title_activity_third">ThirdActivity</string>
 
 </resources>

@@ -1,5 +1,6 @@
 package chiplua.example.helloworld.app;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Message;
 import android.support.v7.app.ActionBarActivity;
@@ -23,10 +24,10 @@ import java.util.Date;
 
 public class MainActivity extends ActionBarActivity {
 
-    public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
     private static final int msgKey1 = 1;
     private TextView mTime;
-    private Button mButton;
+    private Button mButton1;
+    private Button mButton2;
     private int i = 2;
     private int mButtonCount = 0;
     public CharSequence sysTimeStr;
@@ -35,31 +36,37 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mTime = (TextView) findViewById(R.id.myTime);
-        mButton = (Button) findViewById(R.id.timeButton);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-//            public void onClick(View view) {
-//                if (mButtonCount++%2 == 0) {
-//                    mButton.setText("IloveTheWorld");
-//                } else {
-//                    mButton.setText("HELLLLLLLLO");
-//                }
-//            }
+        mButton1 = (Button) findViewById(R.id.timeButton);
+        mButton1.setOnClickListener(new MyButtonListener1());
 
-            public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this, SecondActivity.class);
-
-
-                TextView mSecondActivityTextView = (TextView) findViewById(R.id.secondActivityTextView);
-                String message = mSecondActivityTextView.getText().toString();
-                intent.putExtra(EXTRA_MESSAGE, message);
-
-                startActivity(intent);
-            }
-        });
+        mButton2 = (Button) findViewById(R.id.nextButton);
+        mButton2.setOnClickListener(new MyButtonListener2());
 
         new TimeThread().start();
+    }
 
+    class MyButtonListener1 implements View.OnClickListener {
+
+        @Override
+        public  void onClick(View v){
+            //生成一个intent对象
+            Intent intent = new Intent();
+            intent.putExtra("TestIntent", "要传递的数据");
+            intent.setClass(MainActivity.this, SecondActivity.class);
+            MainActivity.this.startActivity(intent);
+        }
+    }
+
+    class MyButtonListener2 implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v){
+            //生成一个intent对象
+            Intent intent = new Intent();
+            intent.putExtra("SecondButton", "按键2");
+            intent.setClass(MainActivity.this, ThirdActivity.class);
+            MainActivity.this.startActivity(intent);
+        }
     }
 
     public class TimeThread extends Thread {
@@ -76,14 +83,11 @@ public class MainActivity extends ActionBarActivity {
                     //System.out.print(datee.getHours()+"时"+datee.getMinutes()+"分"+datee.getSeconds()+"秒");
                     Log.d("TAG",datee.getHours()+"时"+datee.getMinutes()+"分"+datee.getSeconds()+"秒");
                     sysTimeStr = DateFormat.format("hh:mm:ss", datee);
-
                     //mTime.setText(date);
-
                     Thread.sleep(1000);
                     Message msg = new Message();
                     msg.what = msgKey1;
                     mHandler.sendMessage(msg);
-
                 }
                 catch (MalformedURLException e) {
                     e.printStackTrace();
