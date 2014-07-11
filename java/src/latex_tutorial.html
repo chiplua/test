@@ -1,0 +1,1201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+               "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="cn" xml:lang="cn">
+<head>
+<title>Gradle的使用(chiplua)</title>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
+<meta name="title" content="Gradle的使用(chiplua)"/>
+<meta name="generator" content="Org-mode"/>
+<meta name="generated" content="2014-07-08"/>
+<meta name="author" content="刘涛"/>
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  html { font-family: Times, serif; font-size: 12pt; }
+  .title  { text-align: center; }
+  .todo   { color: red; }
+  .done   { color: green; }
+  .tag    { background-color: #add8e6; font-weight:normal }
+  .target { }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .right  {margin-left:auto; margin-right:0px;  text-align:right;}
+  .left   {margin-left:0px;  margin-right:auto; text-align:left;}
+  .center {margin-left:auto; margin-right:auto; text-align:center;}
+  p.verse { margin-left: 3% }
+  pre {
+	border: 1pt solid #AEBDCC;
+	background-color: #F3F5F7;
+	padding: 5pt;
+	font-family: courier, monospace;
+        font-size: 90%;
+        overflow:auto;
+  }
+  table { border-collapse: collapse; }
+  td, th { vertical-align: top;  }
+  th.right  { text-align:center;  }
+  th.left   { text-align:center;   }
+  th.center { text-align:center; }
+  td.right  { text-align:right;  }
+  td.left   { text-align:left;   }
+  td.center { text-align:center; }
+  dt { font-weight: bold; }
+  div.figure { padding: 0.5em; }
+  div.figure p { text-align: center; }
+  div.inlinetask {
+    padding:10px;
+    border:2px solid gray;
+    margin:10px;
+    background: #ffffcc;
+  }
+  textarea { overflow-x: auto; }
+  .linenr { font-size:smaller }
+  .code-highlighted {background-color:#ffff00;}
+  .org-info-js_info-navigation { border-style:none; }
+  #org-info-js_console-label { font-size:10px; font-weight:bold;
+                               white-space:nowrap; }
+  .org-info-js_search-highlight {background-color:#ffff00; color:#000000;
+                                 font-weight:bold; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript" src="http://cs3.swfc.edu.cn/org-info-js/org-info.js">
+/**
+ *
+ * @source: http://cs3.swfc.edu.cn/org-info-js/org-info.js
+ *
+ * @licstart  The following is the entire license notice for the
+ *  JavaScript code in http://cs3.swfc.edu.cn/org-info-js/org-info.js.
+ *
+ * Copyright (C) 2012-2013  Sebastian Rose
+ *
+ *
+ * The JavaScript code in this tag is free software: you can
+ * redistribute it and/or modify it under the terms of the GNU
+ * General Public License (GNU GPL) as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.  The code is distributed WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+ *
+ * As additional permission under GNU GPL version 3 section 7, you
+ * may distribute non-source (e.g., minimized or compacted) forms of
+ * that code without the copy of the GNU GPL normally required by
+ * section 4, provided you include this license notice and a URL
+ * through which recipients can access the Corresponding Source.
+ *
+ * @licend  The above is the entire license notice
+ * for the JavaScript code in http://cs3.swfc.edu.cn/org-info-js/org-info.js.
+ *
+ */
+</script>
+
+<script type="text/javascript">
+
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+
+<!--/*--><![CDATA[/*><!--*/
+org_html_manager.set("TOC_DEPTH", "3");
+org_html_manager.set("LINK_HOME", "");
+org_html_manager.set("LINK_UP", "");
+org_html_manager.set("LOCAL_TOC", "1");
+org_html_manager.set("VIEW_BUTTONS", "0");
+org_html_manager.set("MOUSE_HINT", "underline");
+org_html_manager.set("FIXED_TOC", "0");
+org_html_manager.set("TOC", "1");
+org_html_manager.set("VIEW", "info");
+org_html_manager.setup();  // activate after the parameters are set
+/*]]>*///-->
+</script>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+
+</head>
+<body>
+
+<div id="preamble">
+
+</div>
+
+<div id="content">
+<h1 class="title">Gradle的使用(chiplua)</h1>
+
+<ul>
+<li>针对java或者android项目gradle的讲解。
+</li>
+<li>针对初级用户
+</li>
+</ul>
+
+
+
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#sec-1">1 概述</a>
+<ul>
+<li><a href="#sec-1-1">1.1 Gradle提供了什么</a></li>
+<li><a href="#sec-1-2">1.2 为什么使用gradle</a></li>
+<li><a href="#sec-1-3">1.3 Gradle安装</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2 Gradle详解</a>
+<ul>
+<li><a href="#sec-2-1">2.1 新建仓库</a></li>
+<li><a href="#sec-2-2">2.2 Java plugin &ndash;tasks</a></li>
+<li><a href="#sec-2-3">2.3 Java plugin &ndash;source set tasks</a></li>
+<li><a href="#sec-2-4">2.4 Java plugin &ndash;lifecycle tasks</a></li>
+<li><a href="#sec-2-5">2.5 Java plugin &ndash;default project layout</a></li>
+<li><a href="#sec-2-6">2.6 Dependency management依赖管理</a></li>
+<li><a href="#sec-2-7">2.7 Convention properties传统属性</a></li>
+<li><a href="#sec-2-8">2.8 Java plugin &ndash;other properties</a></li>
+<li><a href="#sec-2-9">2.9 Working with source sets使用源集</a></li>
+<li><a href="#sec-2-10">2.10 Source set properties源集属性</a></li>
+<li><a href="#sec-2-11">2.11 Defining new source sets新建源集</a></li>
+<li><a href="#sec-2-12">2.12 javadoc</a></li>
+<li><a href="#sec-2-13">2.13 clean</a></li>
+<li><a href="#sec-2-14">2.14 CompileJava编译</a></li>
+<li><a href="#sec-2-15">2.15 Jar打包</a></li>
+<li><a href="#sec-2-16">2.16 Manifest主配置清单</a></li>
+<li><a href="#sec-2-17">2.17 Dependencies</a></li>
+<li><a href="#sec-2-18">2.18 source files Dir</a></li>
+<li><a href="#sec-2-19">2.19 在task中使用shell脚本</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3 android项目中使用Gradle</a>
+<ul>
+<li><a href="#sec-3-1">3.1 构建一个Gradle android项目</a></li>
+<li><a href="#sec-3-2">3.2 Gralde 打包参数详解</a>
+<ul>
+<li><a href="#sec-3-2-1">3.2.1 打签名包</a></li>
+</ul>
+</li>
+<li><a href="#sec-3-3">3.3 打多渠道包(Product Flavor)</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> 概述</h2>
+<div class="outline-text-2" id="text-1">
+
+<p>Gradle 是以 Groovy 语言为基础，面向Java应用为主。基于DSL（领域特定语言）语法的自动化构建工具。
+</p>
+</div>
+
+<div id="outline-container-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Gradle提供了什么</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<pre class="example">
+1.一种可切换的，像maven一样的基于约定的构建框架，却又从不锁住你（约定优于配置）
+Switchable, build-by-convention frameworks a la Maven. But we never lock you in!
+2. 强大的支持多工程的构建
+3. 强大的依赖管理（基于Apache Ivy），提供最大的便利去构建你的工程
+Language for dependency based programming
+4. 全力支持已有的Maven或者Ivy仓库基础建设
+5. 支持传递性依赖管理，在不需要远程仓库和pom.xml和ivy配置文件的前提下
+6 基于groovy脚本构建，其build脚本使用groovy语言编写
+7 具有广泛的领域模型支持你的构建A rich domain model for describing your build.
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> 为什么使用gradle</h3>
+<div class="outline-text-3" id="text-1-2">
+
+
+<pre class="example">
+1.Domain Specific Language (DSL) to describe and manipulate the build logic
+2.Build files are Groovy based and allow mixing of declarative elements through the DSL and using code to manipulate the DSL elements to provide custom logic.
+3.Built-in dependency management through Maven and/or Ivy.
+4.Very flexible. Allows using best practices but doesn’t force its own way of doing things.
+5.Plugins can expose their own DSL and their own API for build files to use.
+6.Good Tooling API allowing IDE integration
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Gradle安装</h3>
+<div class="outline-text-3" id="text-1-3">
+
+<p>    从官方网站www.gradle.org下载最新版本，解压后，将GRADLE_HOME/bin目录加到系统环境变量PATH上。测试是否配置成功在命令行运行：gradle -v 会打印出gradle的版本号等信息.
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Gradle详解</h2>
+<div class="outline-text-2" id="text-2">
+
+
+</div>
+
+<div id="outline-container-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> 新建仓库</h3>
+<div class="outline-text-3" id="text-2-1">
+
+<pre class="example">
+1. gradle init --type java-library ('basic', 'groovy-library', 'java-library', 'pom', 'scala-library'.)
+2. (要使用Java插件)要支持生成jar包的jar工程，只要在build.gradle里面添加一行apply plugin: 'java'
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Java plugin &ndash;tasks</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<pre class="example">
+gradle clean               Deletes the project build directory.
+gradle cleanTaskName       Deletes the output files produced by the specified task.
+                           For example cleanJar will delete the JAR file created by the jar task,
+                           and cleanTest will delete the test results created by the test task.
+gradle jar                 Assembles the JAR file. 在build/libs/目录下生成jar文件
+gradle compilejava         Compiles production Java source files using javac.
+gradle processResources    Copies production resources into the production classes directory.
+gradle classes             Assembles(装配，集合，收集) the production classes directory.
+gradle testClasses         Assembles the test classes directory.
+gradle javadoc             Generates API documentation for the production Java source, using Javadoc
+gradle test                Runs the unit tests using JUnit or TestNG.
+gradle uploadArchives      Uploads the artifacts in the archives configuration, including the JAR fi   
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-3" class="outline-3">
+<h3 id="sec-2-3"><span class="section-number-3">2.3</span> Java plugin &ndash;source set tasks</h3>
+<div class="outline-text-3" id="text-2-3">
+
+<pre class="example">
+gradle compileSourceSetJava        Compiles the given source set's Java source files using javac.
+gradle processSourceSetResources   Copies the given source set's resources into the classes directory.
+gradle sourceSetClasses            Assembles the given source set's classes director
+</pre>
+
+<p>错误详解:
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>chiplua@chiplua:~/workspace/java/src$ gradle sourceSetClasses 
+<span class="linenr"> 2:  </span>FAILURE: Build failed with an exception.
+<span class="linenr"> 3:  </span>* What went wrong:
+<span class="linenr"> 4:  </span>Task 'sourceSetClasses' not found in root project 'src'.
+<span class="linenr"> 5:  </span>
+<span class="linenr"> 6:  </span>* Try:
+<span class="linenr"> 7:  </span>Run gradle tasks to get a list of available tasks. Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+<span class="linenr"> 8:  </span>
+<span class="linenr"> 9:  </span>BUILD FAILED
+<span class="linenr">10:  </span>
+<span class="linenr">11:  </span>Total time: 4.116 secs
+<span class="linenr">12:  </span>chiplua@chiplua:~/workspace/java/src$ 
+</pre>
+
+<p>
+解决方法:
+</p>
+<p>
+在build.gradle的sourceSets的main方法中添加:
+</p><pre class="example">
+   sourceSetClasses {
+      sourceSet.output.classesDir = file("./build/sourceSetClassTest")
+   }
+</pre>
+
+<p>然后执行gradle  clean  gradle sourceSetClasses
+可以看到:
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>chiplua@chiplua:~/workspace/java/src$ tree build
+<span class="linenr"> 2:  </span>build
+<span class="linenr"> 3:  </span>├── dependency-cache
+<span class="linenr"> 4:  </span>└── sourceSetClassTest
+<span class="linenr"> 5:  </span>    ├── Graph.class
+<span class="linenr"> 6:  </span>    ├── Person.class
+<span class="linenr"> 7:  </span>    ├── Product.class
+<span class="linenr"> 8:  </span>    ├── ProductCreator.class
+<span class="linenr"> 9:  </span>    ├── ProductFan.class
+<span class="linenr">10:  </span>    ├── ProductMouse.class
+<span class="linenr">11:  </span>    ├── Rectangular.class
+<span class="linenr">12:  </span>    ├── Round.class
+<span class="linenr">13:  </span>    ├── Square.class
+<span class="linenr">14:  </span>    ├── Student.class
+<span class="linenr">15:  </span>    ├── Test.class
+<span class="linenr">16:  </span>    ├── Triangle.class
+<span class="linenr">17:  </span>    └── Worker.class
+<span class="linenr">18:  </span>
+<span class="linenr">19:  </span>2 directories, 13 files
+<span class="linenr">20:  </span>chiplua@chiplua:~/workspace/java/src$ 
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-4" class="outline-3">
+<h3 id="sec-2-4"><span class="section-number-3">2.4</span> Java plugin &ndash;lifecycle tasks</h3>
+<div class="outline-text-3" id="text-2-4">
+
+<pre class="example">
+gradle assemble                Assembles all the archives in the project.
+gradle check                   Performs all verification tasks in the project.
+gradle buildNeeded             Performs a full build of the project and all projects it depends on.
+gradle build                   Performs a full build of the project.
+gradle buildDependent          Performs a full build of the project and all projects which depend on it.
+gradle buildConfigurationName  Assembles the artifacts in the specified configuration.
+                               The task is added by the Base plugin which is implicitly applied by the Java plugin.
+gradle uploadConfigurationName Assembles and uploads the artifacts in the specified configuration. 
+                               The task is added by the Base plugin which is implicitly applied by the Java plugin.
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-5" class="outline-3">
+<h3 id="sec-2-5"><span class="section-number-3">2.5</span> Java plugin &ndash;default project layout</h3>
+<div class="outline-text-3" id="text-2-5">
+
+<pre class="example">
+   src/main/java                   Production Java source
+   src/main/resources              Production resources
+   src/test/java                   Test Java source
+   src/test/resources              Test resources
+   src/sourceSet/java              Java source for the given source set
+   src/sourceSet/resources         Resources for the given source set
+</pre>
+
+
+<p>
+Changing the project layout改变工程布局
+可以通过配置合适的源集来配置布局。下面是一个简单的例子修改了main中的 Java 和resource source 目录.
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Example Custom Java source layout
+<span class="linenr"> 2:  </span>build.gradle
+<span class="linenr"> 3:  </span>sourceSets {
+<span class="linenr"> 4:  </span>    main {
+<span class="linenr"> 5:  </span>        java {
+<span class="linenr"> 6:  </span>            srcDir 'src/java'
+<span class="linenr"> 7:  </span>        }
+<span class="linenr"> 8:  </span>        resources {
+<span class="linenr"> 9:  </span>            srcDir 'src/resources'
+<span class="linenr">10:  </span>        }
+<span class="linenr">11:  </span>    }
+<span class="linenr">12:  </span>}    
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-6" class="outline-3">
+<h3 id="sec-2-6"><span class="section-number-3">2.6</span> Dependency management依赖管理</h3>
+<div class="outline-text-3" id="text-2-6">
+
+<p>   Java插件有很多依赖配置，它把这些配置分给各个任务，如compileJava 和 test.
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Example Java plugin - dependency configurations
+<span class="linenr">2:  </span>Name            Extends                 Used by tasks           Meaning
+<span class="linenr">3:  </span>compile         -                       compileJava             Compile time dependencies
+<span class="linenr">4:  </span>runtime         compile                 -                       Runtime dependencies
+<span class="linenr">5:  </span>testCompile     compile                 compileTestJava         Additional dependencies for compiling tests.
+<span class="linenr">6:  </span>testRuntime     runtime, testCompile    test                    Additional dependencies for running tests only.
+<span class="linenr">7:  </span>archives        -                       uploadArchives          Artifacts (e.g. jars) produced by this project.
+<span class="linenr">8:  </span>default         runtime                 -                       The default configuration used by a project dependency on this project.
+<span class="linenr">9:  </span>                                                                Contains the artifacts and dependencies required by this project at runtime.
+</pre>
+
+<p>
+   对于加入工程的每个源集，Java插件增加如下依赖配置：
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Example: Java plugin - source set dependency configurations
+<span class="linenr">2:  </span>Name                    Extends                 Used by tasks           Meaning
+<span class="linenr">3:  </span>sourceSetCompile        -                       compileSourceSetJava    Compile time dependencies for the given source set
+<span class="linenr">4:  </span>sourceSetRuntime        sourceSetCompile        -                       Runtime time dependencies for the given source set
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-7" class="outline-3">
+<h3 id="sec-2-7"><span class="section-number-3">2.7</span> Convention properties传统属性</h3>
+<div class="outline-text-3" id="text-2-7">
+
+<p>  Java插件有一些传统属性，如下。你可以直接在脚本中使用这些属性，
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Table: Java plugin - directory properties
+<span class="linenr"> 2:  </span>Property name       Type                Default value                Description
+<span class="linenr"> 3:  </span>reportsDirName      String              reports                      The name of the directory to generate reports into, relative to the build directory.
+<span class="linenr"> 4:  </span>reportsDir          File (read-only)    buildDir/reportsDirName      The directory to generate reports into.
+<span class="linenr"> 5:  </span>testResultsDirName  String              test-results                 The name of the directory to generate test result .xml files into,
+<span class="linenr"> 6:  </span>                                                                     relative to the build directory.
+<span class="linenr"> 7:  </span>testResultsDir      File (read-only)    buildDir/testResultsDirName  The directory to generate test result .xml files into.
+<span class="linenr"> 8:  </span>testReportDirName   String              tests                        The name of the directory to generate the test report into,
+<span class="linenr"> 9:  </span>                                                                     relative to the reports directory.
+<span class="linenr">10:  </span>testReportDir       File (read-only)    reportsDir/testReportDirName The directory to generate the test report into.
+<span class="linenr">11:  </span>libsDirName         String              libs                         The name of the directory to generate libraries into, relative to the build directory.
+<span class="linenr">12:  </span>libsDir             File (read-only)    buildDir/libsDirName         The directory to generate libraries into.
+<span class="linenr">13:  </span>distsDirName        String              distributions                The name of the directory to generate distributions into,
+<span class="linenr">14:  </span>                                                                     relative to the build directory.
+<span class="linenr">15:  </span>distsDir            File (read-only)    buildDir/distsDirName        The directory to generate distributions into.
+<span class="linenr">16:  </span>docsDirName         String              docs                         The name of the directory to generate documentation into,
+<span class="linenr">17:  </span>                                                                     relative to the build directory.
+<span class="linenr">18:  </span>docsDir             File (read-only)    buildDir/docsDirName         The directory to generate documentation into.
+<span class="linenr">19:  </span>dependencyCacheDirName  String          dependency-cache             The name of the directory to use to cache source dependency information,
+<span class="linenr">20:  </span>                                                                     relative to the build directory.
+<span class="linenr">21:  </span>dependencyCacheDir  File (read-only)    buildDir/dependencyCacheDirName  The directory to use to cache source dependency information.
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-8" class="outline-3">
+<h3 id="sec-2-8"><span class="section-number-3">2.8</span> Java plugin &ndash;other properties</h3>
+<div class="outline-text-3" id="text-2-8">
+
+
+
+
+<pre class="example"><span class="linenr">1:  </span>Property name           Type                            Default value                   Description
+<span class="linenr">2:  </span>sourceSets              SourceSetContainer(read-only)   Not null                        Contains the project's source sets.
+<span class="linenr">3:  </span>sourceCompatibility     JavaVersion.                    Value of the current used JVM   Java version compatibility to use when compiling Java source.
+<span class="linenr">4:  </span>targetCompatibility     JavaVersion.                    sourceCompatibility             Java version to generate classes for.
+<span class="linenr">5:  </span>archivesBaseName        String                          projectName                     The basename to use for archives, such as JAR or ZIP files.
+<span class="linenr">6:  </span>manifest                Manifest                        an empty manifest               The manifest to include in all JAR files.
+</pre>
+
+<p>
+这些属性来自传统对象：JavaPluginConvention, BasePluginConvention 和 ReportingBasePluginConvention.
+</p></div>
+
+</div>
+
+<div id="outline-container-2-9" class="outline-3">
+<h3 id="sec-2-9"><span class="section-number-3">2.9</span> Working with source sets使用源集</h3>
+<div class="outline-text-3" id="text-2-9">
+
+<p>  通过sourceSets 属性访问源集，它是工程盛放源集的容器， SourceSetContainer类型的。 还有一个基本块 sourceSets { } ，可以使用闭包来配置源集容器。源集容器工作方式和其他容器完全一样，比如任务tasks.
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Example: Accessing a source set
+<span class="linenr"> 2:  </span>build.gradle
+<span class="linenr"> 3:  </span>// Various ways to access the main source set
+<span class="linenr"> 4:  </span>println sourceSets.main.output.classesDir
+<span class="linenr"> 5:  </span>println sourceSets['main'].output.classesDir
+<span class="linenr"> 6:  </span>sourceSets {
+<span class="linenr"> 7:  </span>    println main.output.classesDir
+<span class="linenr"> 8:  </span>}
+<span class="linenr"> 9:  </span>sourceSets {
+<span class="linenr">10:  </span>    main {
+<span class="linenr">11:  </span>        println output.classesDir
+<span class="linenr">12:  </span>    }
+<span class="linenr">13:  </span>}
+<span class="linenr">14:  </span>
+<span class="linenr">15:  </span>// Iterate over the source sets
+<span class="linenr">16:  </span>sourceSets.all {
+<span class="linenr">17:  </span>    println name
+<span class="linenr">18:  </span>}
+</pre>
+
+<p>
+要配置容器，只要用上面的任意一个方法设置源集属性值即可。源集的属性下面会描述。先简单看个例子：
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Example:  Configuring the source directories of a source set
+<span class="linenr"> 2:  </span>build.gradle
+<span class="linenr"> 3:  </span>sourceSets {
+<span class="linenr"> 4:  </span>    main {
+<span class="linenr"> 5:  </span>        java {
+<span class="linenr"> 6:  </span>            srcDir 'src/java'
+<span class="linenr"> 7:  </span>        }
+<span class="linenr"> 8:  </span>        resources {
+<span class="linenr"> 9:  </span>            srcDir 'src/resources'
+<span class="linenr">10:  </span>        }
+<span class="linenr">11:  </span>    }
+<span class="linenr">12:  </span>}
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-10" class="outline-3">
+<h3 id="sec-2-10"><span class="section-number-3">2.10</span> Source set properties源集属性</h3>
+<div class="outline-text-3" id="text-2-10">
+
+<p>  下面是一些常用的重要的属性，更多的参见：SourceSet.
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Table: Java plugin - source set properties
+<span class="linenr"> 2:  </span>Property name           Type                            Default value                   Description
+<span class="linenr"> 3:  </span>name                    String (read-only)              Not null                        The name of the source set, used to identify it.
+<span class="linenr"> 4:  </span>output                  SourceSetOutput (read-only)     Not null                        The output files of the source set,
+<span class="linenr"> 5:  </span>                                                                                        containing its compiled classes and resources.
+<span class="linenr"> 6:  </span>output.classesDir       File                            buildDir/classes/name           The directory to generate the classes of this source set into.
+<span class="linenr"> 7:  </span>output.resourcesDir     File                            buildDir/resources/name         The directory to generate the resources of this source set into.
+<span class="linenr"> 8:  </span>compileClasspath        FileCollection                  compileSourceSet configuration. The classpath to use when compiling the
+<span class="linenr"> 9:  </span>                                                                                        source files of this source set.
+<span class="linenr">10:  </span>runtimeClasspath        FileCollection                  output+runtimeSourceSetconfiguration.   The classpath to use when executing the classes of this source set.
+<span class="linenr">11:  </span>java                    SourceDirectorySet (read-only)  Not null                         The Java source files of this source set. Contains only .java
+<span class="linenr">12:  </span>                                                                                         files found in the Java source directories, and excludes all other files.
+<span class="linenr">13:  </span>java.srcDirs            Set&lt;File&gt;. Can set using        [projectDir/src/name/java]       The source directories containing the Java source files of this source set.
+<span class="linenr">14:  </span>                        anything described in
+<span class="linenr">15:  </span>                        Section 16.5, “Specifying a
+<span class="linenr">16:  </span>                        set of input files”.      
+<span class="linenr">17:  </span>resources               SourceDirectorySet (read-only)  Not null                         The resources of this source set. Contains only resources, and excludes
+<span class="linenr">18:  </span>                                                                                         any.java files found in the resource source directories. Other plugins,
+<span class="linenr">19:  </span>                                                                                         such as the Groovy plugin, exclude additional types of files from this collection.
+<span class="linenr">20:  </span>resources.srcDirs       Set&lt;File&gt;. Can set using        [projectDir/src/name/resources]  The source directories containing the resources of this source set.
+<span class="linenr">21:  </span>                        anything described in Section
+<span class="linenr">22:  </span>                        16.5, “Specifying a set of
+<span class="linenr">23:  </span>                        input files”.           
+<span class="linenr">24:  </span>allJava                 SourceDirectorySet(read-only)   java                             All .java files of this source set. Some plugins, such as the Groovy plugin,
+<span class="linenr">25:  </span>                                                                                         add additional Java source files to this collection.
+<span class="linenr">26:  </span>allSource               SourceDirectorySet(read-only)   resources + java                 All source files of this source set. This include all resource files and all
+<span class="linenr">27:  </span>                                                                                         Java source files. Some plugins, such as the Groovy plugin, add additional
+<span class="linenr">28:  </span>                                                                                         source files to this collection.
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-11" class="outline-3">
+<h3 id="sec-2-11"><span class="section-number-3">2.11</span> Defining new source sets新建源集</h3>
+<div class="outline-text-3" id="text-2-11">
+
+<p>在 sourceSets { } 块中命名就可以创建源集了:
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Example  Defining a source set
+<span class="linenr">2:  </span>build.gradle
+<span class="linenr">3:  </span>sourceSets {
+<span class="linenr">4:  </span>    intTest
+<span class="linenr">5:  </span>}
+</pre>
+
+<p>
+新建源集后Java插件会给它增加一些依赖配置，见上文： Table: “Java plugin - source set dependency configurations”. 你可以用这些配置定义源集的编译和运行时依赖。
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Example  Defining source set dependencies
+<span class="linenr"> 2:  </span>build.gradle
+<span class="linenr"> 3:  </span>sourceSets {
+<span class="linenr"> 4:  </span>    intTest
+<span class="linenr"> 5:  </span>}
+<span class="linenr"> 6:  </span>
+<span class="linenr"> 7:  </span>dependencies {
+<span class="linenr"> 8:  </span>    intTestCompile 'junit:junit:4.11'
+<span class="linenr"> 9:  </span>    intTestRuntime 'org.ow2.asm:asm-all:4.0'
+<span class="linenr">10:  </span>}
+</pre>
+
+<p>
+Java插件会增加一些汇编任务给源集，见上文“Java plugin - source set tasks”. 比如对于 intTest的源集可以通过执行 gradle intTestClasses 来编译
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Example  Compiling a source set
+<span class="linenr"> 2:  </span>
+<span class="linenr"> 3:  </span>Output of gradle intTestClasses
+<span class="linenr"> 4:  </span>&gt; gradle intTestClasses
+<span class="linenr"> 5:  </span>:compileIntTestJava
+<span class="linenr"> 6:  </span>:processIntTestResources
+<span class="linenr"> 7:  </span>:intTestClasses
+<span class="linenr"> 8:  </span>
+<span class="linenr"> 9:  </span>BUILD SUCCESSFUL
+<span class="linenr">10:  </span>
+<span class="linenr">11:  </span>Total time: 1 secs
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-12" class="outline-3">
+<h3 id="sec-2-12"><span class="section-number-3">2.12</span> javadoc</h3>
+<div class="outline-text-3" id="text-2-12">
+
+
+
+
+<pre class="example"><span class="linenr">1:  </span>javadoc任务是Javadoc的实例。它支持核心javadoc选项和标准doclet选项（见 reference documentation )。完整信息参考 CoreJavadocOptions and StandardJavadocDocletOptions.
+<span class="linenr">2:  </span>Table: Java plugin - Javadoc properties
+<span class="linenr">3:  </span>Task Property                       Type                           Default Value
+<span class="linenr">4:  </span>classpath                           FileCollection                 sourceSets.main.output + sourceSets.main.compileClasspath
+<span class="linenr">5:  </span>source                              FileTree. Can set using anything described in Section 16.5, “Specifying a set of input files”.      sourceSets.main.allJava
+<span class="linenr">6:  </span>destinationDir                      File                           docsDir/javadoc
+<span class="linenr">7:  </span>title                               String                         The name and version of the project
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-13" class="outline-3">
+<h3 id="sec-2-13"><span class="section-number-3">2.13</span> clean</h3>
+<div class="outline-text-3" id="text-2-13">
+
+<p>clean 任务是Delete的实例，它会把 dir 属性值对应的目录删掉.
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Table  Java plugin - Clean properties
+<span class="linenr">2:  </span>Task Property                       Type                            Default Value
+<span class="linenr">3:  </span>dir                                 File                            buildDir
+</pre>
+
+<p>
+Resources资源
+The Java plugin uses the Copy task for resource handling. It adds an instance for each source set in the project. You can find out more about the copy task in “Copying files”.
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Table: Java plugin - ProcessResources properties
+<span class="linenr">2:  </span>Task Property    Type                                                                                   Default Value
+<span class="linenr">3:  </span>srcDirs          Object. Can set using anything described in Section “Specifying a set of input files”. sourceSet.resources
+<span class="linenr">4:  </span>destinationDir   File. Can set using anything described in Section “Locating files”.                    sourceSet.output.resourcesDir
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-14" class="outline-3">
+<h3 id="sec-2-14"><span class="section-number-3">2.14</span> CompileJava编译</h3>
+<div class="outline-text-3" id="text-2-14">
+
+<p>Java插件会给工程中的每个源集增加一个 JavaCompile 类型实例。主要的配置选项如下：
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Table:. Java plugin - Compile properties
+<span class="linenr">2:  </span>Task Property    Type                                                                            Default Value
+<span class="linenr">3:  </span>classpath        FileCollection                                                                  sourceSet.compileClasspath
+<span class="linenr">4:  </span>source           FileTree.Can set using anything described in “Specifying a set of input files”. sourceSet.java
+<span class="linenr">5:  </span>destinationDir   File.                                                                           sourceSet.output.classesDir
+</pre>
+
+<p>
+编译任务委托了Ant的 javac 任务，将options.useAnt设为false可以激活Grass的编译集成从而绕过Ant的任务。以后这会成为默认任务。
+默认Java的编译工作在Gradle进程中执行。将options.fork 设为 true 会生成单独的进程。在Ant中这样做会减慢编译速度，而在Gradle中相反，Gradle会尽量重复使用编译进程。优先尊重的选项是options.forkOptions
+</p></div>
+
+</div>
+
+<div id="outline-container-2-15" class="outline-3">
+<h3 id="sec-2-15"><span class="section-number-3">2.15</span> Jar打包</h3>
+<div class="outline-text-3" id="text-2-15">
+
+<p>jar任务会生成jar文件，包括了工程的类文件和资源文件。jar文件是 archives 依赖配置的产出，所以依赖工程可以直接引用。如果要把工程上传到库，jar文件会被声明为依赖描述符的一部分。
+</p></div>
+
+</div>
+
+<div id="outline-container-2-16" class="outline-3">
+<h3 id="sec-2-16"><span class="section-number-3">2.16</span> Manifest主配置清单</h3>
+<div class="outline-text-3" id="text-2-16">
+
+<p>每个jar或war对象都有一个 manifest 属性，值为 Manifest的单独实例。压缩后对应的MANIFEST.MF文件就写入压缩文件中了。
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Example: Customization of MANIFEST.MF
+<span class="linenr">2:  </span>build.gradle
+<span class="linenr">3:  </span>jar {
+<span class="linenr">4:  </span>    manifest {
+<span class="linenr">5:  </span>        attributes("Implementation-Title": "Gradle", "Implementation-Version": version)
+<span class="linenr">6:  </span>    }
+<span class="linenr">7:  </span>}
+</pre>
+
+<p>
+可以创建 Manifest 的独立实例，这样就可以在jar中共享主配信息了。
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Example: Creating a manifest object.
+<span class="linenr"> 2:  </span>build.gradle
+<span class="linenr"> 3:  </span>ext.sharedManifest = manifest {
+<span class="linenr"> 4:  </span>    attributes("Implementation-Title": "Gradle", "Implementation-Version": version)
+<span class="linenr"> 5:  </span>}
+<span class="linenr"> 6:  </span>task fooJar(type: Jar) {
+<span class="linenr"> 7:  </span>    manifest = project.manifest {
+<span class="linenr"> 8:  </span>        from sharedManifest
+<span class="linenr"> 9:  </span>    }
+<span class="linenr">10:  </span>}
+</pre>
+
+<p>
+Manifest 对象可以随便合并，可以是文件路径也可以是主配引用等等。
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>Example: Separate MANIFEST.MF for a particular archive
+<span class="linenr"> 2:  </span>build.gradle
+<span class="linenr"> 3:  </span>task barJar(type: Jar) {
+<span class="linenr"> 4:  </span>    manifest {
+<span class="linenr"> 5:  </span>        attributes key1: 'value1'
+<span class="linenr"> 6:  </span>        from sharedManifest, 'src/config/basemanifest.txt'
+<span class="linenr"> 7:  </span>        from('src/config/javabasemanifest.txt', 'src/config/libbasemanifest.txt') {
+<span class="linenr"> 8:  </span>            eachEntry { details -&gt;
+<span class="linenr"> 9:  </span>                if (details.baseValue != details.mergeValue) {
+<span class="linenr">10:  </span>                    details.value = baseValue
+<span class="linenr">11:  </span>                }
+<span class="linenr">12:  </span>                if (details.key == 'foo') {
+<span class="linenr">13:  </span>                    details.exclude()
+<span class="linenr">14:  </span>                }
+<span class="linenr">15:  </span>            }
+<span class="linenr">16:  </span>        }
+<span class="linenr">17:  </span>    }
+<span class="linenr">18:  </span>}
+</pre>
+
+<p>
+Manifest会按照from 语句中的顺序进行合并。如果合并中发现相同的值则保持原来的，可以通过增加eachEntry 动作自定义合并行为，在里面要访问 ManifestMergeDetails 的实例。合并并不是立即执行的，而是在生成jar文件或者调用 writeTo 和 effectiveManifest的时候。要把主配写入硬盘很简单：
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>Example: Separate MANIFEST.MF for a particular archive
+<span class="linenr">2:  </span>build.gradle
+<span class="linenr">3:  </span>jar.manifest.writeTo("$buildDir/mymanifest.mf")
+</pre>
+
+</div>
+
+</div>
+
+<div id="outline-container-2-17" class="outline-3">
+<h3 id="sec-2-17"><span class="section-number-3">2.17</span> Dependencies</h3>
+<div class="outline-text-3" id="text-2-17">
+
+<p>   Dependencies{} 是一个configuration block。它会在所有的Task执行之前运行，其作用就是准备好要用的变量和数据结构。
+</p><pre class="example">
+1）dependencies用于声明一组依赖，这些依赖会被组合为configuration;
+2）configuration代表了一组构件及其依赖。
+</pre>
+
+<p>dependencies的语法结构如下：
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>dependencies {
+<span class="linenr">2:  </span>    configurationName dependencyNotation1, dependencyNotation2, ...
+<span class="linenr">3:  </span>}
+</pre>
+
+<p>
+testCompile 就是configuration, 'junit:junit:4.11'则是dependencyNotation
+例如:compile files('./a.jar')
+</p>
+<p>
+还可以直接依赖本地jar包，如：
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+}这样就可以直接依赖/libs/目录下所有的jar文件了。
+</p>
+</div>
+
+</div>
+
+<div id="outline-container-2-18" class="outline-3">
+<h3 id="sec-2-18"><span class="section-number-3">2.18</span> source files Dir</h3>
+<div class="outline-text-3" id="text-2-18">
+
+
+
+
+<pre class="example"><span class="linenr"> 1:  </span> Redefine where Gradle should expect Java source files (*.java)
+<span class="linenr"> 2:  </span>    sourceSets {
+<span class="linenr"> 3:  </span>        main {
+<span class="linenr"> 4:  </span>            manifest.srcFile 'build/mergeOut.xml'
+<span class="linenr"> 5:  </span>            java.srcDirs = ['../../src']
+<span class="linenr"> 6:  </span>            resources.srcDirs = ['../../src']
+<span class="linenr"> 7:  </span>            aidl.srcDirs = ['../../src']
+<span class="linenr"> 8:  </span>            renderscript.srcDirs = ['../../src']
+<span class="linenr"> 9:  </span>            res.srcDirs = ['.res_temp']
+<span class="linenr">10:  </span>            assets.srcDirs = ['../../assets']
+<span class="linenr">11:  </span>            jniLibs.srcDirs = ['../../libs','../hll_ser_3.2.2/libs']
+<span class="linenr">12:  </span>        }
+<span class="linenr">13:  </span>
+<span class="linenr">14:  </span>    }
+<span class="linenr">15:  </span>// Redefine where .class files are written
+<span class="linenr">16:  </span>sourceSets.main.output.classesDir = file("classes")
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-2-19" class="outline-3">
+<h3 id="sec-2-19"><span class="section-number-3">2.19</span> 在task中使用shell脚本</h3>
+<div class="outline-text-3" id="text-2-19">
+
+
+
+
+<pre class="example"><span class="linenr">1:  </span>task doMyShell(type: Exec) {
+<span class="linenr">2:  </span>    executable 'sh'
+<span class="linenr">3:  </span>    args '-c','bash test.sh $arg'
+<span class="linenr">4:  </span>}
+</pre>
+
+
+
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> android项目中使用Gradle</h2>
+<div class="outline-text-2" id="text-3">
+
+
+</div>
+
+<div id="outline-container-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> 构建一个Gradle android项目</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<p>首先，你要安装Gradle 1.6 并且，写进系统的环境变量里面，所有的命令都是默认你已经配好了gradle 的环境。而且已经升级了android sdk
+1.要用gradle构建android有三种方式：（build.gradle 放到项目目录下）
+</p><pre class="example">
+1).利用adt 22导出 build.gradle.
+2).复制别人写好的build.gradle 文件.
+3).根据gradle 规则，手写android 的build.gradle 文件。
+</pre>
+
+<p>推荐1,2 方法.
+2.第一次使用gradle 构建android项目建议你先使用gradle clean 把android gradle 插件，还有相关依赖包下载下来并且对环境进行初始化，如果出错了，一般可能是下载超时，试多几次即可，最后你会看到如下提示：BUILD SUCCESSFUL
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>chiplua@chiplua:~/workspace/java/src_android$ ls
+<span class="linenr"> 2:  </span>build.gradle
+<span class="linenr"> 3:  </span>chiplua@chiplua:~/workspace/java/src_android$ gradle clean
+<span class="linenr"> 4:  </span>:clean UP-TO-DATE
+<span class="linenr"> 5:  </span>
+<span class="linenr"> 6:  </span>BUILD SUCCESSFUL
+<span class="linenr"> 7:  </span>
+<span class="linenr"> 8:  </span>Total time: 4.827 secs
+<span class="linenr"> 9:  </span>chiplua@chiplua:~/workspace/java/src_android$ la
+<span class="linenr">10:  </span>build.gradle  .gradle
+<span class="linenr">11:  </span>chiplua@chiplua:~/workspace/java/src_android$ 
+</pre>
+
+<p>
+3.编译
+使用命令gradle build
+使用gradle build 就完成了android 项目的构建了。你将会在项目目录里面看到一个build 的目录,最终打包的apk 就在build/apk 目录下了。然后，你会发现，两个apk 一个是 [项目名]-debug-unaligned [项目名]-release-unsigned。
+</p>
+
+
+
+
+<pre class="example"><span class="linenr"> 1:  </span>  buildscript {//Configures the build script classpath for this project. 说白了就是设置脚本的运行环境
+<span class="linenr"> 2:  </span>
+<span class="linenr"> 3:  </span>    repositories {//Returns a handler to create repositories which are used for retrieving dependencies and uploading artifacts produced by the project. 大意就是支持java依赖库管理（maven/ivy）,用于项目的依赖。这也是gradle 强力的地方。
+<span class="linenr"> 4:  </span>        mavenCentral()
+<span class="linenr"> 5:  </span>    }
+<span class="linenr"> 6:  </span>
+<span class="linenr"> 7:  </span>    dependencies {//The dependency handler of this project. The returned dependency handler instance can be used for adding new dependencies. For accessing already declared dependencies, the configurations can be used. 依赖包的定义。支持maven/ivy，远程，本地库，也支持单文件，如果前面定义了repositories{}maven 库，使用maven的依赖的时候只需要按照用类似于com.android.tools.build:gradle:0.4，gradle 就会自动的往远程库下载相应的依赖
+<span class="linenr"> 8:  </span>        classpath 'com.android.tools.build:gradle:0.8+'
+<span class="linenr"> 9:  </span>    }
+<span class="linenr">10:  </span>}
+<span class="linenr">11:  </span>
+<span class="linenr">12:  </span>apply plugin: 'android'   //声明构建的项目类型，这里当然是android。
+<span class="linenr">13:  </span>
+<span class="linenr">14:  </span>dependencies {
+<span class="linenr">15:  </span>}
+<span class="linenr">16:  </span>
+<span class="linenr">17:  </span>android {
+<span class="linenr">18:  </span>
+<span class="linenr">19:  </span>    compileSdkVersion 19
+<span class="linenr">20:  </span>    buildToolsVersion "19"
+<span class="linenr">21:  </span>
+<span class="linenr">22:  </span>    defaultConfig {
+<span class="linenr">23:  </span>        minSdkVersion 15
+<span class="linenr">24:  </span>        targetSdkVersion 19
+<span class="linenr">25:  </span>    }
+<span class="linenr">26:  </span>
+<span class="linenr">27:  </span>    //声明创建一个带签名的发布版本细节
+<span class="linenr">28:  </span>    signingConfigs {
+<span class="linenr">29:  </span>        release {
+<span class="linenr">30:  </span>            storeFile file("../hllkey.keystore")
+<span class="linenr">31:  </span>            storePassword "szty1234"
+<span class="linenr">32:  </span>            keyAlias "haolianluo"
+<span class="linenr">33:  </span>            keyPassword "szty1234"           
+<span class="linenr">34:  </span>        }
+<span class="linenr">35:  </span>    }
+<span class="linenr">36:  </span>
+<span class="linenr">37:  </span>    buildTypes {
+<span class="linenr">38:  </span>        release {
+<span class="linenr">39:  </span>            runProguard true
+<span class="linenr">40:  </span>            proguardFiles '../../proguard-project.txt'
+<span class="linenr">41:  </span>            signingConfig signingConfigs.release
+<span class="linenr">42:  </span>        }
+<span class="linenr">43:  </span>    }
+<span class="linenr">44:  </span>
+<span class="linenr">45:  </span>    sourceSets {
+<span class="linenr">46:  </span>        main {
+<span class="linenr">47:  </span>            manifest.srcFile 'build/mergeOut.xml'
+<span class="linenr">48:  </span>            java.srcDirs = ['../../src']
+<span class="linenr">49:  </span>            resources.srcDirs = ['../../src']
+<span class="linenr">50:  </span>            aidl.srcDirs = ['../../src']
+<span class="linenr">51:  </span>            renderscript.srcDirs = ['../../src']
+<span class="linenr">52:  </span>            res.srcDirs = ['.res_temp']
+<span class="linenr">53:  </span>            assets.srcDirs = ['../../assets']
+<span class="linenr">54:  </span>            jniLibs.srcDirs = ['../../libs','../hll_ser_3.2.2/libs']
+<span class="linenr">55:  </span>        }
+<span class="linenr">56:  </span>
+<span class="linenr">57:  </span>    }
+<span class="linenr">58:  </span>
+<span class="linenr">59:  </span>
+<span class="linenr">60:  </span>    dependencies {
+<span class="linenr">61:  </span>        compile 'com.android.support:support-v4:+'
+<span class="linenr">62:  </span>        compile files('../hll_ser_3.2.2/libs/hll_jar_v3.2.2.jar')
+<span class="linenr">63:  </span>        compile files('../../libs/Msc.jar')
+<span class="linenr">64:  </span>        compile files('../../libs/SpeechApi.jar')
+<span class="linenr">65:  </span>        compile files('../../libs/jcc-bate-0.7.3.jar')
+<span class="linenr">66:  </span>    }
+<span class="linenr">67:  </span>
+<span class="linenr">68:  </span> lintOptions {
+<span class="linenr">69:  </span>          abortOnError false
+<span class="linenr">70:  </span>      }
+<span class="linenr">71:  </span>
+<span class="linenr">72:  </span>
+<span class="linenr">73:  </span>}
+</pre>
+
+
+</div>
+
+</div>
+
+<div id="outline-container-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Gralde 打包参数详解</h3>
+<div class="outline-text-3" id="text-3-2">
+
+
+</div>
+
+<div id="outline-container-3-2-1" class="outline-4">
+<h4 id="sec-3-2-1"><span class="section-number-4">3.2.1</span> 打签名包</h4>
+<div class="outline-text-4" id="text-3-2-1">
+
+<p>默认输出release apk是没有签名的，那么我们需要签名的很简单，只需要在android{}里面补充加上即可。
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>build.gradle
+<span class="linenr"> 2:  </span>signingConfigs {
+<span class="linenr"> 3:  </span>   myConfig{
+<span class="linenr"> 4:  </span>     storeFile file("gradle.keystore")
+<span class="linenr"> 5:  </span>        storePassword "gradle"
+<span class="linenr"> 6:  </span>        keyAlias "gradle"
+<span class="linenr"> 7:  </span>        keyPassword "gradle"
+<span class="linenr"> 8:  </span>    }
+<span class="linenr"> 9:  </span>}
+<span class="linenr">10:  </span>
+<span class="linenr">11:  </span>   buildTypes{
+<span class="linenr">12:  </span>     release {
+<span class="linenr">13:  </span>        signingConfig  signingConfigs.myConfig
+<span class="linenr">14:  </span>     } 
+<span class="linenr">15:  </span>   }
+</pre>
+
+<p>
+然后，运行gradle clean  gradle build ,这次在build/apk 你看到了多了一个[项目名]-release-unaligned， 从字面上面我就可以知道，这个只是没有进行zipAlign 优化的版本而已。而[项目名]-release 就是我们签名，并且zipAlign的apk包了. ###打混淆包### 只需要在原来的基础上加上
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>build.gradle
+<span class="linenr">2:  </span>buildTypes{
+<span class="linenr">3:  </span>   release {
+<span class="linenr">4:  </span>   signingConfig  signingConfigs.myConfig
+<span class="linenr">5:  </span>     runProguard true
+<span class="linenr">6:  </span>     proguardFile 'proguard-android.txt'
+<span class="linenr">7:  </span>   }
+<span class="linenr">8:  </span>}
+</pre>
+
+<p>
+gradle clean
+gradle build   
+</p>
+</div>
+</div>
+
+</div>
+
+<div id="outline-container-3-3" class="outline-3">
+<h3 id="sec-3-3"><span class="section-number-3">3.3</span> 打多渠道包(Product Flavor)</h3>
+<div class="outline-text-3" id="text-3-3">
+
+<p>为什么产生了两个apk？
+默认的android gralde 插件定义了两种apk的类型debug, release.这个是android gralde插件buildTypes{}方法产生的，默认配置好了两个默认模板,当然你也可以修改.前面我们就是在修改默认的release的配置,让输出release类型的的apk,具有签名和混淆。对于多渠道包,android 插件提供了一个名为Product Flavor{}的配置,用于进行多渠道打包。例如,我的android应用有海外版和国内版本.而且这两个版本的包名是不一样的。（按照这个思路，你要打包100个不同的市场只是几行代码的事情。
+你只需要在android{} 补充上
+</p>
+
+
+<pre class="example"><span class="linenr">1:  </span>build.gradle
+<span class="linenr">2:  </span>productFlavors {
+<span class="linenr">3:  </span>        playstore {
+<span class="linenr">4:  </span>                        packageName='com.abcdef.androidgradle.playstore'
+<span class="linenr">5:  </span>        }
+<span class="linenr">6:  </span>        hiapk {
+<span class="linenr">7:  </span>                        packageName='com.adbcdef.androidgradle.amazonappstore'
+<span class="linenr">8:  </span>        }
+<span class="linenr">9:  </span>}
+</pre>
+
+<p>
+然后gradle clean,gradle build,在build/apk 下面你会看到一堆的包，命名格式[项目名]-[渠道名]-release
+</p>
+<p>
+Product Flavor{} 
+不只是能改包名那么简单,还能够对编译的源码目录进行切换。如果你用的是分发渠道分析,你需要修改AndroidManifest.xml添加上&lt;meta-data android:value="hiapk" android:name="UMENG_CHANNEL"/&gt;
+如果你很多渠道,然后你就会很痛苦,现在用gradle就非常舒服,你只需要在android.sourceSets指定我们的渠道名就行,android gradle 插件，会自动打包,例如
+</p>
+
+
+<pre class="example"><span class="linenr"> 1:  </span>build.gradle
+<span class="linenr"> 2:  </span>sourceSets {
+<span class="linenr"> 3:  </span>    main {
+<span class="linenr"> 4:  </span>        manifest.srcFile 'AndroidManifest.xml'
+<span class="linenr"> 5:  </span>        java.srcDirs = ['src']
+<span class="linenr"> 6:  </span>        resources.srcDirs = ['src']
+<span class="linenr"> 7:  </span>        aidl.srcDirs = ['src']
+<span class="linenr"> 8:  </span>        renderscript.srcDirs = ['src']
+<span class="linenr"> 9:  </span>        res.srcDirs = ['res']
+<span class="linenr">10:  </span>        assets.srcDirs = ['assets']
+<span class="linenr">11:  </span>    }
+<span class="linenr">12:  </span>
+<span class="linenr">13:  </span>    hiapk {
+<span class="linenr">14:  </span>        manifest.srcFile 'hiapk/AndroidManifest.xml'
+<span class="linenr">15:  </span>    }           
+<span class="linenr">16:  </span>    playstore {
+<span class="linenr">17:  </span>                manifest.srcFile 'hiapk/AndroidManifest.xml'
+<span class="linenr">18:  </span>    }
+<span class="linenr">19:  </span>
+<span class="linenr">20:  </span>        instrumentTest.setRoot('tests')
+<span class="linenr">21:  </span>
+<span class="linenr">22:  </span>}
+</pre>
+
+<p>
+然后运行gradle clean,gradle build,
+</p></div>
+</div>
+</div>
+</div>
+
+<div id="postamble">
+
+
+</div>
+</body>
+</html>

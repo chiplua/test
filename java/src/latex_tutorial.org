@@ -1,0 +1,625 @@
+#+TITLE:     Gradle的使用(chiplua)
+#+AUTHOR:    刘涛
+#+EMAIL:     liutao@haolianluo.com
+#+DATE:      2014-07-08
+#+DESCRIPTION:
+#+KEYWORDS:
+#+LANGUAGE:  cn
+#+OPTIONS:   H:3 num:t toc:t \n:nil @:t ::t f:t *:t <:t author:nil creator:nil timestamp:nil
+#+OPTIONS:   TeX:t LaTeX:t skip:nil d:nil todo:t pri:nil tags:not-in-toc
+#+INFOJS_OPT: view:info toc:t ltoc:t mouse:underline buttons:0 path:http://cs3.swfc.edu.cn/org-info-js/org-info.js
+#+EXPORT_SELECT_TAGS: export
+#+EXPORT_EXCLUDE_TAGS: noexport
+#+EXPORT_AUTHOR: noexport
+#+LINK_UP:   
+#+LINK_HOME: 
+#+XSLT:
+# (setq org-export-html-use-infojs t)
+#+OPTIONS: ^:nil  
+
+- 针对java或者android项目gradle的讲解。
+- 针对初级用户
+  
+* 概述
+Gradle 是以 Groovy 语言为基础，面向Java应用为主。基于DSL（领域特定语言）语法的自动化构建工具。
+** Gradle提供了什么
+: 1.一种可切换的，像maven一样的基于约定的构建框架，却又从不锁住你（约定优于配置）
+: Switchable, build-by-convention frameworks a la Maven. But we never lock you in!
+: 2. 强大的支持多工程的构建
+: 3. 强大的依赖管理（基于Apache Ivy），提供最大的便利去构建你的工程
+: Language for dependency based programming
+: 4. 全力支持已有的Maven或者Ivy仓库基础建设
+: 5. 支持传递性依赖管理，在不需要远程仓库和pom.xml和ivy配置文件的前提下
+: 6 基于groovy脚本构建，其build脚本使用groovy语言编写
+: 7 具有广泛的领域模型支持你的构建A rich domain model for describing your build.
+
+** 为什么使用gradle
+   
+: 1.Domain Specific Language (DSL) to describe and manipulate the build logic
+: 2.Build files are Groovy based and allow mixing of declarative elements through the DSL and using code to manipulate the DSL elements to provide custom logic.
+: 3.Built-in dependency management through Maven and/or Ivy.
+: 4.Very flexible. Allows using best practices but doesn’t force its own way of doing things.
+: 5.Plugins can expose their own DSL and their own API for build files to use.
+: 6.Good Tooling API allowing IDE integration
+** Gradle安装
+    从官方网站www.gradle.org下载最新版本，解压后，将GRADLE_HOME/bin目录加到系统环境变量PATH上。测试是否配置成功在命令行运行：gradle -v 会打印出gradle的版本号等信息.
+
+* Gradle详解
+** 新建仓库
+: 1. gradle init --type java-library ('basic', 'groovy-library', 'java-library', 'pom', 'scala-library'.)
+: 2. (要使用Java插件)要支持生成jar包的jar工程，只要在build.gradle里面添加一行apply plugin: 'java'
+** Java plugin --tasks
+: gradle clean		     Deletes the project build directory.
+: gradle cleanTaskName	     Deletes the output files produced by the specified task.
+:			     For example cleanJar will delete the JAR file created by the jar task,
+:			     and cleanTest will delete the test results created by the test task.
+: gradle jar		     Assembles the JAR file. 在build/libs/目录下生成jar文件
+: gradle compilejava	     Compiles production Java source files using javac.
+: gradle processResources    Copies production resources into the production classes directory.
+: gradle classes	     Assembles(装配，集合，收集) the production classes directory.
+: gradle testClasses	     Assembles the test classes directory.
+: gradle javadoc	     Generates API documentation for the production Java source, using Javadoc
+: gradle test		     Runs the unit tests using JUnit or TestNG.
+: gradle uploadArchives	     Uploads the artifacts in the archives configuration, including the JAR fi   
+** Java plugin --source set tasks
+: gradle compileSourceSetJava	     Compiles the given source set's Java source files using javac.
+: gradle processSourceSetResources   Copies the given source set's resources into the classes directory.
+: gradle sourceSetClasses	     Assembles the given source set's classes director
+错误详解:
+#+begin_src latex -n      
+chiplua@chiplua:~/workspace/java/src$ gradle sourceSetClasses 
+FAILURE: Build failed with an exception.
+* What went wrong:
+Task 'sourceSetClasses' not found in root project 'src'.
+
+* Try:
+Run gradle tasks to get a list of available tasks. Run with --stacktrace option to get the stack trace. Run with --info or --debug option to get more log output.
+
+BUILD FAILED
+
+Total time: 4.116 secs
+chiplua@chiplua:~/workspace/java/src$ 
+#+end_src
+解决方法:
+
+在build.gradle的sourceSets的main方法中添加:
+:    sourceSetClasses {
+:	sourceSet.output.classesDir = file("./build/sourceSetClassTest")
+:    }
+然后执行gradle  clean  gradle sourceSetClasses
+可以看到:
+#+begin_src latex -n      
+chiplua@chiplua:~/workspace/java/src$ tree build
+build
+├── dependency-cache
+└── sourceSetClassTest
+    ├── Graph.class
+    ├── Person.class
+    ├── Product.class
+    ├── ProductCreator.class
+    ├── ProductFan.class
+    ├── ProductMouse.class
+    ├── Rectangular.class
+    ├── Round.class
+    ├── Square.class
+    ├── Student.class
+    ├── Test.class
+    ├── Triangle.class
+    └── Worker.class
+
+2 directories, 13 files
+chiplua@chiplua:~/workspace/java/src$ 
+#+end_src
+** Java plugin --lifecycle tasks
+: gradle assemble	         Assembles all the archives in the project.
+: gradle check		         Performs all verification tasks in the project.
+: gradle buildNeeded	         Performs a full build of the project and all projects it depends on.
+: gradle build		         Performs a full build of the project.
+: gradle buildDependent          Performs a full build of the project and all projects which depend on it.
+: gradle buildConfigurationName  Assembles the artifacts in the specified configuration.
+:	    		         The task is added by the Base plugin which is implicitly applied by the Java plugin.
+: gradle uploadConfigurationName Assembles and uploads the artifacts in the specified configuration. 
+:				 The task is added by the Base plugin which is implicitly applied by the Java plugin.
+** Java plugin --default project layout
+:    src/main/java		     Production Java source
+:    src/main/resources		     Production resources
+:    src/test/java	             Test Java source
+:    src/test/resources	             Test resources
+:    src/sourceSet/java		     Java source for the given source set
+:    src/sourceSet/resources	     Resources for the given source set
+
+Changing the project layout改变工程布局
+可以通过配置合适的源集来配置布局。下面是一个简单的例子修改了main中的 Java 和resource source 目录.
+#+begin_src latex -n
+Example Custom Java source layout
+build.gradle
+sourceSets {
+    main {
+        java {
+            srcDir 'src/java'
+        }
+        resources {
+            srcDir 'src/resources'
+        }
+    }
+}    
+#+end_src   
+** Dependency management依赖管理
+   Java插件有很多依赖配置，它把这些配置分给各个任务，如compileJava 和 test.
+#+begin_src latex -n
+Example Java plugin - dependency configurations
+Name		Extends			Used by tasks	        Meaning
+compile		-			compileJava		Compile time dependencies
+runtime		compile			-			Runtime dependencies
+testCompile	compile			compileTestJava	        Additional dependencies for compiling tests.
+testRuntime	runtime, testCompile	test		        Additional dependencies for running tests only.
+archives	-			uploadArchives	        Artifacts (e.g. jars) produced by this project.
+default		runtime			-		        The default configuration used by a project dependency on this project.
+							        Contains the artifacts and dependencies required by this project at runtime.
+#+end_src   								
+   对于加入工程的每个源集，Java插件增加如下依赖配置：
+#+begin_src latex -n
+Example: Java plugin - source set dependency configurations
+Name			Extends			Used by tasks	        Meaning
+sourceSetCompile	-			compileSourceSetJava	Compile time dependencies for the given source set
+sourceSetRuntime	sourceSetCompile	-	                Runtime time dependencies for the given source set
+#+end_src
+** Convention properties传统属性
+  Java插件有一些传统属性，如下。你可以直接在脚本中使用这些属性，
+#+begin_src latex -n
+Table: Java plugin - directory properties
+Property name	    Type		Default value	             Description
+reportsDirName	    String		reports		             The name of the directory to generate reports into, relative to the build directory.
+reportsDir	    File (read-only)	buildDir/reportsDirName	     The directory to generate reports into.
+testResultsDirName  String		test-results	             The name of the directory to generate test result .xml files into,
+							             relative to the build directory.
+testResultsDir	    File (read-only)	buildDir/testResultsDirName  The directory to generate test result .xml files into.
+testReportDirName   String		tests		             The name of the directory to generate the test report into,
+							             relative to the reports directory.
+testReportDir	    File (read-only)	reportsDir/testReportDirName The directory to generate the test report into.
+libsDirName	    String		libs		             The name of the directory to generate libraries into, relative to the build directory.
+libsDir		    File (read-only)	buildDir/libsDirName	     The directory to generate libraries into.
+distsDirName	    String		distributions	             The name of the directory to generate distributions into,
+							             relative to the build directory.
+distsDir	    File (read-only)	buildDir/distsDirName	     The directory to generate distributions into.
+docsDirName	    String		docs		             The name of the directory to generate documentation into,
+							             relative to the build directory.
+docsDir		    File (read-only)	buildDir/docsDirName	     The directory to generate documentation into.
+dependencyCacheDirName	String		dependency-cache	     The name of the directory to use to cache source dependency information,
+							             relative to the build directory.
+dependencyCacheDir  File (read-only)	buildDir/dependencyCacheDirName	 The directory to use to cache source dependency information.
+#+end_src
+  
+** Java plugin --other properties
+#+begin_src latex -n   
+Property name		Type				Default value	                Description
+sourceSets		SourceSetContainer(read-only)	Not null	                Contains the project's source sets.
+sourceCompatibility	JavaVersion.			Value of the current used JVM	Java version compatibility to use when compiling Java source.
+targetCompatibility	JavaVersion.			sourceCompatibility	        Java version to generate classes for.
+archivesBaseName	String				projectName	                The basename to use for archives, such as JAR or ZIP files.
+manifest		Manifest			an empty manifest	        The manifest to include in all JAR files.
+#+end_src
+这些属性来自传统对象：JavaPluginConvention, BasePluginConvention 和 ReportingBasePluginConvention.
+** Working with source sets使用源集
+  通过sourceSets 属性访问源集，它是工程盛放源集的容器， SourceSetContainer类型的。 还有一个基本块 sourceSets { } ，可以使用闭包来配置源集容器。源集容器工作方式和其他容器完全一样，比如任务tasks.
+#+begin_src latex -n   
+Example: Accessing a source set
+build.gradle
+// Various ways to access the main source set
+println sourceSets.main.output.classesDir
+println sourceSets['main'].output.classesDir
+sourceSets {
+    println main.output.classesDir
+}
+sourceSets {
+    main {
+        println output.classesDir
+    }
+}
+
+// Iterate over the source sets
+sourceSets.all {
+    println name
+}
+#+end_src
+要配置容器，只要用上面的任意一个方法设置源集属性值即可。源集的属性下面会描述。先简单看个例子：
+#+begin_src latex -n   
+Example:  Configuring the source directories of a source set
+build.gradle
+sourceSets {
+    main {
+        java {
+            srcDir 'src/java'
+        }
+        resources {
+            srcDir 'src/resources'
+        }
+    }
+}
+#+end_src
+** Source set properties源集属性
+  下面是一些常用的重要的属性，更多的参见：SourceSet.
+#+begin_src latex -n   
+Table: Java plugin - source set properties
+Property name		Type				Default value	                Description
+name			String (read-only)		Not null	                The name of the source set, used to identify it.
+output			SourceSetOutput (read-only)	Not null	                The output files of the source set,
+							                                containing its compiled classes and resources.
+output.classesDir	File				buildDir/classes/name	        The directory to generate the classes of this source set into.
+output.resourcesDir	File				buildDir/resources/name         The directory to generate the resources of this source set into.
+compileClasspath	FileCollection			compileSourceSet configuration.	The classpath to use when compiling the
+							                                source files of this source set.
+runtimeClasspath	FileCollection			output+runtimeSourceSetconfiguration.	The classpath to use when executing the classes of this source set.
+java			SourceDirectorySet (read-only)	Not null	                 The Java source files of this source set. Contains only .java
+							                                 files found in the Java source directories, and excludes all other files.
+java.srcDirs		Set<File>. Can set using	[projectDir/src/name/java]	 The source directories containing the Java source files of this source set.
+			anything described in
+			Section 16.5, “Specifying a
+			set of input files”.	  
+resources		SourceDirectorySet (read-only)	Not null	                 The resources of this source set. Contains only resources, and excludes
+							                                 any.java files found in the resource source directories. Other plugins,
+											 such as the Groovy plugin, exclude additional types of files from this collection.
+resources.srcDirs	Set<File>. Can set using	[projectDir/src/name/resources]  The source directories containing the resources of this source set.
+			anything described in Section
+			16.5, “Specifying a set of
+			input files”.		
+allJava			SourceDirectorySet(read-only)	java	                         All .java files of this source set. Some plugins, such as the Groovy plugin,
+							                                 add additional Java source files to this collection.
+allSource		SourceDirectorySet(read-only)	resources + java	         All source files of this source set. This include all resource files and all
+							                                 Java source files. Some plugins, such as the Groovy plugin, add additional
+											 source files to this collection.
+#+end_src
+** Defining new source sets新建源集
+在 sourceSets { } 块中命名就可以创建源集了:
+#+begin_src latex -n
+Example  Defining a source set
+build.gradle
+sourceSets {
+    intTest
+}
+#+end_src
+新建源集后Java插件会给它增加一些依赖配置，见上文： Table: “Java plugin - source set dependency configurations”. 你可以用这些配置定义源集的编译和运行时依赖。
+#+begin_src latex -n
+Example  Defining source set dependencies
+build.gradle
+sourceSets {
+    intTest
+}
+
+dependencies {
+    intTestCompile 'junit:junit:4.11'
+    intTestRuntime 'org.ow2.asm:asm-all:4.0'
+}
+#+end_src
+Java插件会增加一些汇编任务给源集，见上文“Java plugin - source set tasks”. 比如对于 intTest的源集可以通过执行 gradle intTestClasses 来编译
+#+begin_src latex -n
+Example  Compiling a source set
+
+Output of gradle intTestClasses
+> gradle intTestClasses
+:compileIntTestJava
+:processIntTestResources
+:intTestClasses
+
+BUILD SUCCESSFUL
+
+Total time: 1 secs
+#+end_src
+** javadoc
+#+begin_src latex -n
+javadoc任务是Javadoc的实例。它支持核心javadoc选项和标准doclet选项（见 reference documentation )。完整信息参考 CoreJavadocOptions and StandardJavadocDocletOptions.
+Table: Java plugin - Javadoc properties
+Task Property			    Type		           Default Value
+classpath			    FileCollection	           sourceSets.main.output + sourceSets.main.compileClasspath
+source				    FileTree. Can set using anything described in Section 16.5, “Specifying a set of input files”.	sourceSets.main.allJava
+destinationDir			    File		           docsDir/javadoc
+title				    String		           The name and version of the project
+#+end_src
+** clean
+clean 任务是Delete的实例，它会把 dir 属性值对应的目录删掉.
+#+begin_src latex -n
+Table  Java plugin - Clean properties
+Task Property			    Type		            Default Value
+dir				    File		            buildDir
+#+end_src
+Resources资源
+The Java plugin uses the Copy task for resource handling. It adds an instance for each source set in the project. You can find out more about the copy task in “Copying files”.
+#+begin_src latex -n
+Table: Java plugin - ProcessResources properties
+Task Property    Type		                                                                        Default Value
+srcDirs		 Object. Can set using anything described in Section “Specifying a set of input files”.	sourceSet.resources
+destinationDir	 File. Can set using anything described in Section “Locating files”.	                sourceSet.output.resourcesDir
+#+end_src
+** CompileJava编译
+Java插件会给工程中的每个源集增加一个 JavaCompile 类型实例。主要的配置选项如下：
+#+begin_src latex -n
+Table:. Java plugin - Compile properties
+Task Property	 Type		                                                                 Default Value
+classpath	 FileCollection	                                                                 sourceSet.compileClasspath
+source		 FileTree.Can set using anything described in “Specifying a set of input files”. sourceSet.java
+destinationDir	 File.		                                                                 sourceSet.output.classesDir
+#+end_src
+编译任务委托了Ant的 javac 任务，将options.useAnt设为false可以激活Grass的编译集成从而绕过Ant的任务。以后这会成为默认任务。
+默认Java的编译工作在Gradle进程中执行。将options.fork 设为 true 会生成单独的进程。在Ant中这样做会减慢编译速度，而在Gradle中相反，Gradle会尽量重复使用编译进程。优先尊重的选项是options.forkOptions
+** Jar打包
+jar任务会生成jar文件，包括了工程的类文件和资源文件。jar文件是 archives 依赖配置的产出，所以依赖工程可以直接引用。如果要把工程上传到库，jar文件会被声明为依赖描述符的一部分。
+** Manifest主配置清单
+每个jar或war对象都有一个 manifest 属性，值为 Manifest的单独实例。压缩后对应的MANIFEST.MF文件就写入压缩文件中了。
+#+begin_src latex -n
+Example: Customization of MANIFEST.MF
+build.gradle
+jar {
+    manifest {
+        attributes("Implementation-Title": "Gradle", "Implementation-Version": version)
+    }
+}
+#+end_src
+可以创建 Manifest 的独立实例，这样就可以在jar中共享主配信息了。
+#+begin_src latex -n
+Example: Creating a manifest object.
+build.gradle
+ext.sharedManifest = manifest {
+    attributes("Implementation-Title": "Gradle", "Implementation-Version": version)
+}
+task fooJar(type: Jar) {
+    manifest = project.manifest {
+        from sharedManifest
+    }
+}
+#+end_src
+Manifest 对象可以随便合并，可以是文件路径也可以是主配引用等等。
+#+begin_src latex -n
+Example: Separate MANIFEST.MF for a particular archive
+build.gradle
+task barJar(type: Jar) {
+    manifest {
+        attributes key1: 'value1'
+        from sharedManifest, 'src/config/basemanifest.txt'
+        from('src/config/javabasemanifest.txt', 'src/config/libbasemanifest.txt') {
+            eachEntry { details ->
+                if (details.baseValue != details.mergeValue) {
+                    details.value = baseValue
+                }
+                if (details.key == 'foo') {
+                    details.exclude()
+                }
+            }
+        }
+    }
+}
+#+end_src
+Manifest会按照from 语句中的顺序进行合并。如果合并中发现相同的值则保持原来的，可以通过增加eachEntry 动作自定义合并行为，在里面要访问 ManifestMergeDetails 的实例。合并并不是立即执行的，而是在生成jar文件或者调用 writeTo 和 effectiveManifest的时候。要把主配写入硬盘很简单：
+#+begin_src latex -n
+Example: Separate MANIFEST.MF for a particular archive
+build.gradle
+jar.manifest.writeTo("$buildDir/mymanifest.mf")
+#+end_src
+** Dependencies
+   Dependencies{} 是一个configuration block。它会在所有的Task执行之前运行，其作用就是准备好要用的变量和数据结构。
+: 1）dependencies用于声明一组依赖，这些依赖会被组合为configuration;
+: 2）configuration代表了一组构件及其依赖。
+dependencies的语法结构如下：
+#+begin_src latex -n
+dependencies {
+    configurationName dependencyNotation1, dependencyNotation2, ...
+}
+#+end_src
+testCompile 就是configuration, 'junit:junit:4.11'则是dependencyNotation
+例如:compile files('./a.jar')
+
+还可以直接依赖本地jar包，如：
+dependencies {
+    compile fileTree(dir: 'libs', include: '*.jar')
+}这样就可以直接依赖/libs/目录下所有的jar文件了。
+
+** source files Dir
+#+begin_src latex -n   
+ Redefine where Gradle should expect Java source files (*.java)
+    sourceSets {
+        main {
+            manifest.srcFile 'build/mergeOut.xml'
+            java.srcDirs = ['../../src']
+            resources.srcDirs = ['../../src']
+            aidl.srcDirs = ['../../src']
+            renderscript.srcDirs = ['../../src']
+            res.srcDirs = ['.res_temp']
+            assets.srcDirs = ['../../assets']
+	    jniLibs.srcDirs = ['../../libs','../hll_ser_3.2.2/libs']
+        }
+
+    }
+// Redefine where .class files are written
+sourceSets.main.output.classesDir = file("classes")
+#+end_src
+
+** 在task中使用shell脚本
+#+begin_src latex -n      
+task doMyShell(type: Exec) {
+    executable 'sh'
+    args '-c','bash test.sh $arg'
+}
+#+end_src
+
+
+* android项目中使用Gradle
+** 构建一个Gradle android项目
+首先，你要安装Gradle 1.6 并且，写进系统的环境变量里面，所有的命令都是默认你已经配好了gradle 的环境。而且已经升级了android sdk
+1.要用gradle构建android有三种方式：（build.gradle 放到项目目录下）
+: 1).利用adt 22导出 build.gradle.
+: 2).复制别人写好的build.gradle 文件.
+: 3).根据gradle 规则，手写android 的build.gradle 文件。
+推荐1,2 方法.
+2.第一次使用gradle 构建android项目建议你先使用gradle clean 把android gradle 插件，还有相关依赖包下载下来并且对环境进行初始化，如果出错了，一般可能是下载超时，试多几次即可，最后你会看到如下提示：BUILD SUCCESSFUL
+#+begin_src latex -n
+chiplua@chiplua:~/workspace/java/src_android$ ls
+build.gradle
+chiplua@chiplua:~/workspace/java/src_android$ gradle clean
+:clean UP-TO-DATE
+
+BUILD SUCCESSFUL
+
+Total time: 4.827 secs
+chiplua@chiplua:~/workspace/java/src_android$ la
+build.gradle  .gradle
+chiplua@chiplua:~/workspace/java/src_android$ 
+#+end_src
+3.编译
+使用命令gradle build
+使用gradle build 就完成了android 项目的构建了。你将会在项目目录里面看到一个build 的目录,最终打包的apk 就在build/apk 目录下了。然后，你会发现，两个apk 一个是 [项目名]-debug-unaligned [项目名]-release-unsigned。
+
+
+#+begin_src latex -n        
+  buildscript {//Configures the build script classpath for this project. 说白了就是设置脚本的运行环境
+
+    repositories {//Returns a handler to create repositories which are used for retrieving dependencies and uploading artifacts produced by the project. 大意就是支持java依赖库管理（maven/ivy）,用于项目的依赖。这也是gradle 强力的地方。
+        mavenCentral()
+    }
+
+    dependencies {//The dependency handler of this project. The returned dependency handler instance can be used for adding new dependencies. For accessing already declared dependencies, the configurations can be used. 依赖包的定义。支持maven/ivy，远程，本地库，也支持单文件，如果前面定义了repositories{}maven 库，使用maven的依赖的时候只需要按照用类似于com.android.tools.build:gradle:0.4，gradle 就会自动的往远程库下载相应的依赖
+        classpath 'com.android.tools.build:gradle:0.8+'
+    }
+}
+
+apply plugin: 'android'   //声明构建的项目类型，这里当然是android。
+
+dependencies {
+}
+
+android {
+
+    compileSdkVersion 19
+    buildToolsVersion "19"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+    }
+    
+    //声明创建一个带签名的发布版本细节
+    signingConfigs {
+        release {
+            storeFile file("../hllkey.keystore")
+            storePassword "szty1234"
+            keyAlias "haolianluo"
+            keyPassword "szty1234"           
+        }
+    }
+    
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles '../../proguard-project.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+    
+    sourceSets {
+        main {
+            manifest.srcFile 'build/mergeOut.xml'
+            java.srcDirs = ['../../src']
+            resources.srcDirs = ['../../src']
+            aidl.srcDirs = ['../../src']
+            renderscript.srcDirs = ['../../src']
+            res.srcDirs = ['.res_temp']
+            assets.srcDirs = ['../../assets']
+	    jniLibs.srcDirs = ['../../libs','../hll_ser_3.2.2/libs']
+        }
+
+    }
+    
+    
+    dependencies {
+        compile 'com.android.support:support-v4:+'
+        compile files('../hll_ser_3.2.2/libs/hll_jar_v3.2.2.jar')
+        compile files('../../libs/Msc.jar')
+        compile files('../../libs/SpeechApi.jar')
+	compile files('../../libs/jcc-bate-0.7.3.jar')
+    }
+	
+ lintOptions {
+          abortOnError false
+      }
+    
+    
+}
+#+end_src
+ 
+** Gralde 打包参数详解
+*** 打签名包
+默认输出release apk是没有签名的，那么我们需要签名的很简单，只需要在android{}里面补充加上即可。
+#+begin_src latex -n
+build.gradle
+signingConfigs {
+   myConfig{
+     storeFile file("gradle.keystore")
+    	storePassword "gradle"
+    	keyAlias "gradle"
+    	keyPassword "gradle"
+    }
+}
+    
+   buildTypes{
+     release {
+    	signingConfig  signingConfigs.myConfig
+     } 
+   }
+#+end_src latex -n 
+然后，运行gradle clean  gradle build ,这次在build/apk 你看到了多了一个[项目名]-release-unaligned， 从字面上面我就可以知道，这个只是没有进行zipAlign 优化的版本而已。而[项目名]-release 就是我们签名，并且zipAlign的apk包了. ###打混淆包### 只需要在原来的基础上加上
+#+begin_src latex -n
+build.gradle
+buildTypes{
+   release {
+   signingConfig  signingConfigs.myConfig
+     runProguard true
+     proguardFile 'proguard-android.txt'
+   }
+}
+#+end_src 
+gradle clean
+gradle build   
+ 
+** 打多渠道包(Product Flavor)
+为什么产生了两个apk？
+默认的android gralde 插件定义了两种apk的类型debug, release.这个是android gralde插件buildTypes{}方法产生的，默认配置好了两个默认模板,当然你也可以修改.前面我们就是在修改默认的release的配置,让输出release类型的的apk,具有签名和混淆。对于多渠道包,android 插件提供了一个名为Product Flavor{}的配置,用于进行多渠道打包。例如,我的android应用有海外版和国内版本.而且这两个版本的包名是不一样的。（按照这个思路，你要打包100个不同的市场只是几行代码的事情。
+你只需要在android{} 补充上
+#+begin_src latex -n
+build.gradle
+productFlavors {
+	playstore {
+			packageName='com.abcdef.androidgradle.playstore'
+	}
+	hiapk {
+			packageName='com.adbcdef.androidgradle.amazonappstore'
+	}
+}
+#+end_src
+然后gradle clean,gradle build,在build/apk 下面你会看到一堆的包，命名格式[项目名]-[渠道名]-release
+
+Product Flavor{} 
+不只是能改包名那么简单,还能够对编译的源码目录进行切换。如果你用的是分发渠道分析,你需要修改AndroidManifest.xml添加上<meta-data android:value="hiapk" android:name="UMENG_CHANNEL"/>
+如果你很多渠道,然后你就会很痛苦,现在用gradle就非常舒服,你只需要在android.sourceSets指定我们的渠道名就行,android gradle 插件，会自动打包,例如
+#+begin_src latex -n
+build.gradle
+sourceSets {
+    main {
+        manifest.srcFile 'AndroidManifest.xml'
+        java.srcDirs = ['src']
+        resources.srcDirs = ['src']
+        aidl.srcDirs = ['src']
+        renderscript.srcDirs = ['src']
+        res.srcDirs = ['res']
+        assets.srcDirs = ['assets']
+    }
+        
+    hiapk {
+      	manifest.srcFile 'hiapk/AndroidManifest.xml'
+    }    	
+    playstore {
+       		manifest.srcFile 'hiapk/AndroidManifest.xml'
+    }
+       
+	instrumentTest.setRoot('tests')
+        
+}
+#+end_src
+然后运行gradle clean,gradle build,
