@@ -1,12 +1,15 @@
-class Student extends Person {
-	int grade;
-	String sex;
+package com.chiplua.person;
+import com.chiplua.person.*;
 
-	Student(){
+public class Student extends Person {
+	public int grade;
+	public String sex;
+
+	public Student(){
 		System.out.println("Student: The constructor Student() function");
 	}
 
-	Student(String name, int age, String sex) {
+	public Student(String name, int age, String sex) {
 		super(name, age);
 		this.sex = sex;
 	}

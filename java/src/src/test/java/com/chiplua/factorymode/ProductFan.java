@@ -1,3 +1,6 @@
+package com.chiplua.factorymode;
+import com.chiplua.factorymode.Product;
+
 public class ProductFan implements Product {
 	public void getName() {
 		System.out.println("ProductFan: The Class ProductFan's getName function");

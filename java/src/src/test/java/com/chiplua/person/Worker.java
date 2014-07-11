@@ -1,7 +1,8 @@
-//import com.chiplua.person;
+package com.chiplua.person;
+import com.chiplua.person.Person;
 
-class Worker extends Person{
-	Worker() {
+public class Worker extends Person{
+	public Worker() {
 		System.out.println("Worker: Constructor the Worker class");
 	}
 

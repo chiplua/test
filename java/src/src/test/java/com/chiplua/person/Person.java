@@ -1,14 +1,14 @@
-//package com.chiplua.person;
+package com.chiplua.person;
 
-class Person {
-	protected String name;
+public class Person {
+	public String name;
 	public int	age;
 
-	Person() {
+	public Person() {
 	    System.out.println("Person: The constructor function");
 	}
 
-	Person(String name, int age) {
+	public Person(String name, int age) {
 	    this.name = name;
 		this.age = age;
     }
